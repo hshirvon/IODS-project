@@ -1,7 +1,7 @@
 
 # About the project
 
-*I am very ecxited to start the course, seems interesting!:-)*
+*I am very ecxited to start the course, seems interesting!!!:-)*
 
 ```{r}
 # This is a so-called "R chunk" where you can write R code.
