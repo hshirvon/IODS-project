@@ -1,6 +1,7 @@
-# Insert chapter 2 title here
+# Regression and model validation
 
-*Describe the work you have done this week and summarize your learning.*
+#Heidi Hirvonen 11.11.2020 
+#This wee I have been learning simple linear regression
 
 - Describe your work and results clearly. 
 - Assume the reader has an introductory course level understanding of writing and reading R code as well as statistical methods.
@@ -8,7 +9,8 @@
 
 ```{r}
 date()
-#Heidi Hirvonen 11.11.2020 testcomment
+
+
 lrn14 <- read.table("https://www.mv.helsinki.fi/home/kvehkala/JYTmooc/JYTOPKYS3-data.txt", sep="\t", header=TRUE)
 str(lrn14)
 dim(lrn14)
