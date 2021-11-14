@@ -1,4 +1,4 @@
-#Heidi Hirvonen 11.11.2020 testcomment
+#Heidi Hirvonen 11.11.2020 this file contains learning2014 data.
 lrn14 <- read.table("https://www.mv.helsinki.fi/home/kvehkala/JYTmooc/JYTOPKYS3-data.txt", sep="\t", header=TRUE)
 str(lrn14)
 dim(lrn14)
