@@ -1,0 +1,103 @@
+# **Logistic Regression**
+#Heidi Hirvonen 18.11.2020 
+
+**1.** First, I created the Rmd file, Chapter3
+
+**2.** Next, I will read the joined student alcohol consumption data into R from
+https://github.com/rsund/IODS-project/raw/master/data/alc.csv
+
+- Then I will print out the names of the variables in the data with the colnames() function and describe the dataset
+```{r}
+
+joined_data <- read.table("https://github.com/rsund/IODS-project/raw/master/data/alc.csv", sep=",", header=TRUE)
+
+colnames(joined_data)
+
+```
+
+- This data measures student achievement in secondary education of two Portuguese schools.The data attributes include student grades, demographic, social and school related features and it was collected by using school reports and questionnaires.The original source of this data is https://archive.ics.uci.edu/ml/datasets/Student+Performance*
+
+**3.** Next I will analyze the relationships between high/low alcohol consumption and some of the other variables in the data. 
+
+- My assumption is that high alcohol use could negatively affect current health status and positively affect number of school absences "absences" (more absences).
+
+- Again, I think that family educational support & extra-curricular activities "activities" would negatively affect high alcohol use.
+
+**4.** First,  I will access the tidyverse libraries tidyr, dplyr and ggplot2. Then I will numerically and graphically explore the distributions of my chosen variables and alcohol use (crosstabulations, barplots & boxplots)
+
+```{r}
+
+library(tidyr)
+
+library(dplyr)
+
+library(ggplot2)
+
+glimpse(joined_data)
+
+gather(joined_data) %>% glimpse
+
+#Produce summary statistics of high_use and health
+joined_data %>% group_by(high_use) %>% summarise(count = n(),mean(health))
+
+# initialize a plot of high_use and health
+a1 <- ggplot(joined_data, aes(x = high_use, y = health))
+
+# define the plot as a boxplot and draw it
+a1 + geom_point()
+
+
+#Produce summary statistics of high_use and absences
+joined_data %>% group_by(high_use) %>% summarise(count = n(),mean(absences))
+
+# initialize a plot of high_use and absences
+a2 <- ggplot(joined_data, aes(x = high_use, y = absences))
+
+# define the plot as a boxplot and draw it
+a1 + geom_boxplot() + ylab("absences")
+
+#Produce summary statistics of family support and high alcohol use
+joined_data %>% group_by(famsup) %>% summarise(count = n(),mean(high_use))
+
+# initialize a plot of high_use and health
+a3 <- ggplot(joined_data, aes(x = famsup, y = high_use))
+
+# define the plot as a boxplot and draw it
+a3 + geom_boxplot() + ylab("high_use")
+
+#Produce summary statistics of extra curricular activities and high alcohol use
+joined_data %>% group_by(activities) %>% summarise(count = n(),mean(high_use))
+
+# initialize a plot of high_use and absences
+a4 <- ggplot(joined_data, aes(x = activities, y = high_use))
+
+# define the plot as a boxplot and draw it
+a4 + geom_boxplot() + ylab("high_use")
+
+
+```
+- Quite surprisingly it looks like students with high use of alcohol, have a better mean health (3,73) than the ones who use less alcohol(3,49). Obviously I do not see a causal connection here
+
+- The connection between absences and high alcohol use are as I expected. Mean absences for the students with high alcohol use is 6,38 days and ones with less alcohol use is 3,71 days.
+
+- As I expected family educational support and extra curricular activities are  negatively correlated with high alcohol use
+
+
+**5.** Next, I am using logistic regression to statistically explore the relationship between my chosen variables and the binary high/low alcohol consumption variable as the target variable. I will present and interpret the coefficients of the models as odds ratios and provide confidence intervalls for them
+
+
+```{r}
+#regression
+m <- glm(high_use ~ health + absences + famsup + activities, data = joined_data , family = "binomial")
+summary(m)
+coef(m)
+
+
+```
+ **6.** Usinng the variables which according to my regression model had a statistical relationship with high/low alcohol consumption, I will explore the predictive power of my model. I will provide a 2X2 crosstabulation of predictions versus the actual values and optionally display a graphic visualizing both the actual values and the predictions.
+
+
+```{r}
+
+```
+
