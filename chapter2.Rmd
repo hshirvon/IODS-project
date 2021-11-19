@@ -1,9 +1,6 @@
-# **Regression and model validation**
+# **Chapter2: Regression and model validation**
 
-#Heidi Hirvonen 11.11.2020 
-
-#This week we have been learning regression.
-
+This week I have been learning simple linear regression.
 
 ```{r}
 date()

@@ -1,4 +1,4 @@
-# **Logistic Regression**
+# **Chapter3:Logistic Regression**
 #Heidi Hirvonen 18.11.2020 
 
 **1.** First, I created the Rmd file, Chapter3
@@ -45,7 +45,6 @@ a1 <- ggplot(joined_data, aes(x = high_use, y = health))
 
 # define the plot as a boxplot and draw it
 a1 + geom_point()
-
 
 #Produce summary statistics of high_use and absences
 joined_data %>% group_by(high_use) %>% summarise(count = n(),mean(absences))

@@ -1,15 +1,14 @@
 
-# About the project
+# **Chapter1:Introduction**
 
-*I am very ecxited to start the course, seems interesting:-)*
+I am a PhD student in Economic history and want to learn R to be able to use it in my research. The course seems some what challenging for me, but I am quite ecxited to learn these new skills!
 
 **My Github repository is** https://github.com/hshirvon/IODS-project
+**My course diary is at:** https://hshirvon.github.io/IODS-project/
 
 ```{r}
-# This is a so-called "R chunk" where you can write R code.
 
 date()
 
 ```
-The text continues here.
 
