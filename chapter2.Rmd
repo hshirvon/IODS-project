@@ -4,49 +4,61 @@ This week I have been learning simple linear regression.
 
 ```{r}
 date()
+```
 
-#1. 
+**1.** First, I will read the students2014 data into R  from my local folder and explore the structure and the dimensions of the data + also trying out a few other functions.
+
+
+```{r}
 heididata <- read.table("data/heidindata.csv", sep=",", header=TRUE)
 #Explore the structure and the dimensions of the data 
 str(heididata)
 dim(heididata)
-#The dataset "heididata" includes 8 variables and 166 observations. 
-#It is a subdata of an international survey of Approaches to Learning, which has been collected 3.12.2014 - 10.1.2015. The variables included in the  "heididata" are gender, age, attitude, deep learning, strategic learning, surface learning, points and a running variable X.
+head(heididata)
+```
+The dataset "heididata" includes 8 variables and 166 observations. 
+It is a subdata of an international survey of Approaches to Learning, which has been collected 3.12.2014 - 10.1.2015. The variables included in the  "heididata" are gender, age, attitude, deep learning, strategic learning, surface learning, points and a running variable X.
 
-#2. Graphical overview
+**2.** Next, I will show a graphical overview of the data and show summaries of the variables in the data. I will also describe and interpret the outputs.
+
+```{r}
 plot(heididata)
 summary(heididata)
-#The age of the respondents is between 17 and 55;  attitude approximately 1,4 - 5,0; deep learning approximately 1.6 - 4,9; strategic learning approximately 1,3 - 5,0; surface learning approximately 1,6 - 4,3 and points 7 - 33. 
+```
+The age of the respondents is between 17 and 55;  attitude approximately 1,4 - 5,0; deep learning approximately 1.6 - 4,9; strategic learning approximately 1,3 - 5,0; surface learning approximately 1,6 - 4,3 and points 7 - 33. 
 
-# 3. My regression model explains the target (dependent) variable, exam points, with gender, age and attitude. 
+**3.** My regression model explains the target (dependent) variable, exam points, with gender, age and attitude. 
+
+```{r}
+
 my_regression <- lm(lrn14.Points ~ sukupuoli + lrn14.Age + lrn14.Attitude , data = heididata)
+
 #Print out a summary of my regression model
 summary(my_regression)
-#The regression model explains the target (dependent) variable, exam points, with gender, strategic learning and attitude. Attitude has a statistically significant relationship with Points, but gender and age do not. 
+```
 
-#Running the regression again with just attitude as the explanatory variable and print out a summary of the regression model:
+The regression model explains the target (dependent) variable, exam points, with gender, strategic learning and attitude. Attitude has a statistically significant relationship with Points, but gender and age do not. 
+
+Next, I will run the regression again with just attitude as the explanatory variable and print out a summary of the regression model:
+
+```{r}
 my_regression2 <- lm(lrn14.Points ~ lrn14.Attitude , data = heididata)
 summary(my_regression2)
+```
 
-#4. Since gender and age did not have a statistically significant effect, I will analyze the summary of the my_regression2 with attitude as the explanatory variable. 
+**4.** Since gender and age did not have a statistically significant effect, I will analyze the summary of the my_regression2 with attitude as the explanatory variable. 
 
-#The coefficient is 3.5255, meaning that when the explanatory variable (attitude) moves one unit, the target variable moves 3.5255 units. One unit better attitude, should result in 3.5255 more points! 
+The coefficient is 3.5255, meaning that when the explanatory variable (attitude) moves one unit, the target variable moves 3.5255 units. One unit better attitude, should result in 3.5255 more points! 
 
-#The multiple R squared of the model is 0.1906. This means that approximately 19.1% the variation in points is explained by the variation in attitude. 
+The multiple R squared of the model is 0.1906. This means that approximately 19.1% the variation in points is explained by the variation in attitude. 
 
-#5.
+**5**
 
-# In linear regression model we need to assume linearity as well as that the errors are normally distributed, the errors are not correlated, the errors have constant variance, the size of a given error does not depend on the explanatory variables. 
+In linear regression model we need to assume linearity as well as that the errors are normally distributed, the errors are not correlated, the errors have constant variance, the size of a given error does not depend on the explanatory variables. A boxplot or probability plot of the residuals can be useful in checking for symmetry and specifically the normality of the error terms in the regression model.
 
-# A boxplot or probability plot of the residuals can be useful in checking for symmetry and specifically the normality of the error terms in the regression model. 
+I am using the linear model object "my_regression" with several explanatory variables that was created earlier, I will produce the following diagnostic plots: Residuals vs Fitted values, Normal QQ-plot and Residuals vs Leverage. 
 
-#Plotting the **residuals against the fitted values** of the response variable. If the variability of the residuals appears to increase with the size of the fitted values, a transformation of the response variable prior to fitting is indicated.
- 
-# the **QQ-plot of the residuals** provides a method to explore the assumption that the errors are normally distributed.
-
-# **Residuals vs. leverage plot** can help identify which observations have an unusually high impact.
-
-# I am using the linear model object "my_regression" with several explanatory variables that was created earlier
+```{r}
 
 #Let's place the following 4 graphics to the same plot:
 par(mfrow = c(2,2))
@@ -54,9 +66,11 @@ par(mfrow = c(2,2))
 #Calling the plot function with 1 (Residuals vs Fitted values), 2 (Normal QQ-plot) & 5 (Residuals vs Leverage). 
 plot(my_regression,which=c(1,2,5)) 
 
-#**Residuals vs. fitted values** looks pretty much what is looked for to confirm that the fitted model is appropriate. Seems that assumption of constant variance is justified.
-
-#In the **QQ plot of the residuals** there is a small dip in the beginning and in the end which might cause a small worry for the the assumption that the errors are normally distributed.
-
-#**Residuals vs. leverage** does not look very balanced. Some observations have an unusually large impact,
 ```
+
+
+First, let's look at the **residuals against the fitted values** of the response variable. If the variability of the residuals appears to increase with the size of the fitted values, a transformation of the response variable prior to fitting is indicated. In my case, the residuals vs. fitted values looks pretty much what is expected to confirm that the fitted model is appropriate. Seems that assumption of constant variance is justified.
+ 
+the **QQ-plot of the residuals** provides a method to explore the assumption that the errors are normally distributed. In the there is a small dip in the beginning and in the end which might cause a small worry for the the assumption that the errors are normally distributed. Still, the plot shows a reasonable enough fit of errors with the straight line.
+
+**Residuals vs. leverage plot** can help identify which observations have an unusually high impact. Residuals vs. leverage does not look very balanced. Some observations have an unusually large impact.
