@@ -1,0 +1,199 @@
+---
+# **Chapter4:Clustering and classification**
+#Heidi Hirvonen 24.11.2020 
+---
+**1.** First, I created the Rmd file, Chapter4 and added it as a child file in the index.Rmd.
+**2.** I will load the Boston dataset and descrbe it briefly.
+```{r}
+# access the MASS package
+library(MASS)
+# load the data
+data("Boston")
+# explore the dataset
+str(Boston)
+dim(Boston)
+```
+The Boston dataset is a dataset ofHousing Values in Suburbs of Boston. It includes 14 variables and 506 observations
+The 14 variables in the dataset are:
+- crim, per capita crime rate by town.
+- zn, proportion of residential land zoned for lots over 25,000 sq.ft.
+- indus, proportion of non-retail business acres per town.
+- chas, Charles River dummy variable (= 1 if tract bounds river; 0 otherwise).
+- nox, nitrogen oxides concentration (parts per 10 million).
+- rm, average number of rooms per dwelling.
+- age, proportion of owner-occupied units built prior to 1940.
+- dis, weighted mean of distances to five Boston employment centres.
+- rad, index of accessibility to radial highways.
+- tax, full-value property-tax rate per \$10,000.
+- ptratio, pupil-teacher ratio by town.
+- black, 1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town.
+- lstat, lower status of the population (percent).
+- medv, median value of owner-occupied homes in \$1000s.
+
+**3.**I will show a graphical overview of the data and show summaries of the variables in the data. 
+```{r}
+summary(Boston)
+
+```
+From the summaries we get an overview of the variables, here are some observations
+
+- Per capita crime rate by town varies a lot, high rates in some towns are pulling the mean (3.61352) up and it is a lot higher than the median (0.25651).
+- The proportion of residential land zoned for lots over 25,000 sq.ft also varies a lot, the median is 0.00, but the mean is 11.36.
+- Proportion of non-retail business acres per town varies between 0.46 and 27.74.
+
+```{r}
+library(corrplot)
+library(tidyr)
+
+# calculate the correlation matrix and round it
+cor_matrix<-cor(Boston) %>% round(digits = 2)
+
+# print the correlation matrix
+cor_matrix
+
+# visualize the correlation matrix
+corrplot(cor_matrix, method="circle", type="upper", cl.pos="b", tl.pos="d", tl.cex = 0.6)
+
+```
+- From the correlation matrix we can see that there is a strong negative correlation between index of accessibility to radial highways(rad) and high full-value property-tax rate per \$10,000 (tax)
+- We cam also see that there is a strong negative correlation between weighted mean of distances to five Boston employment centres (dis)  nitrogen oxides concentration (nox), proportion of owner-occupied units built prior to 1940 (age) &  proportion of non-retail business acres per town (indus).
+
+I am interested in education so I want to take a closer look at how the - pupil-teacher ratio by town is correlated with the other variables. It seems that there is a somewhat strong positive correlation with:
+- tax, full-value property-tax rate per \$10,000.(0.46)
+- rad, index of accessibility to radial highways.(0.46)
+- indus, proportion of non-retail business acres per town (0.38)
+- lstat, lower status of the population (percent) (0.37)
+and a negative correlation with: 
+- medv, median value of owner-occupied homes in \$1000s. (-0.51)
+- rm, average number of rooms per dwelling (-0.36)
+- zn, proportion of residential land zoned for lots over 25,000 sq.ft.(-0.39)
+
+We can conclude that a high pupil teacher ratio is connected to  a higher proportion of lower status of the population and a lower median value of owner-occupied homes.
+
+**4.** Next, I will standardize the dataset and print out summaries of the scaled data. As we can see, tandardization will set the mean of all the variables to 0.
+
+```{r}
+boston_scaled <- scale(Boston)
+summary(boston_scaled)
+boston_scaled <- as.data.frame(boston_scaled)
+
+```
+Next,  let's create a categorical variable of the crime rate in the Boston dataset using the scaled crime rate and quantiles as the break points in the categorical variable.Also dropping the old crime rate variable from the dataset. Divide the dataset to train and test sets, so that 80% of the data belongs to the train set. (0-2 points)
+```{r}
+# summary of the scaled crime rate
+summary(boston_scaled$crim)
+# create a quantile vector of crim and print it
+bins <- quantile(boston_scaled$crim)
+bins
+
+# create a categorical variable 'crime'
+crime <- cut(boston_scaled$crim, breaks = bins, include.lowest = TRUE, labels = c("low", "med_low", "med_high", "high"))
+
+# look at the table of the new factor crime
+table(crime)
+
+# remove original crim from the dataset
+boston_scaled <- dplyr::select(boston_scaled, -crim)
+
+# add the new categorical value to scaled data
+boston_scaled <- data.frame(boston_scaled, crime)
+
+#Dividing the dataset to train and test sets, so that 80% of the data belongs to the train set
+
+# number of rows in the Boston dataset 
+n <- nrow(boston_scaled)
+
+# choose randomly 80% of the rows
+ind <- sample(n,  size = n * 0.8)
+
+# create train set
+train <- boston_scaled[ind,]
+
+# create test set 
+test <- boston_scaled[-ind,]
+
+# save the correct classes from test data
+correct_classes <- test$crime
+
+# remove the crime variable from test data
+test <- dplyr::select(test, -crime)
+
+```
+**5.** Fitting the linear discriminant analysis on the train set. Use the categorical crime rate as the target variable and all the other variables in the dataset as predictor variables. Draw the LDA (bi)plot. 
+
+```{r}
+# MASS and train are available
+library(MASS)
+
+# linear discriminant analysis
+lda.fit <- lda(crime ~ ., data = train)
+
+# print the lda.fit object
+lda.fit
+
+# the function for lda biplot arrows
+lda.arrows <- function(x, myscale = 1, arrow_heads = 0.1, color = "orange", tex = 0.75, choices = c(1,2)){
+  heads <- coef(x)
+  arrows(x0 = 0, y0 = 0, 
+         x1 = myscale * heads[,choices[1]], 
+         y1 = myscale * heads[,choices[2]], col=color, length = arrow_heads)
+  text(myscale * heads[,choices], labels = row.names(heads), 
+       cex = tex, col=color, pos=3)
+}
+
+# target classes as numeric
+classes <- as.numeric(train$crime)
+
+# plot the lda results
+plot(lda.fit, dimen = 2, col = classes, pch = classes)
+lda.arrows(lda.fit, myscale = 1)
+
+```
+**6.** 
+Save the crime categories from the test set and then remove the categorical crime variable from the test dataset. Then predict the classes with the LDA model on the test data. Cross tabulate the results with the crime categories from the test set. Comment on the results. 
+
+```{r}
+# predict classes with test data
+lda.pred <- predict(lda.fit, newdata = test)
+
+# cross tabulate the results
+table(correct = correct_classes, predicted = lda.pred$class)
+
+```
+**7.** Reload the Boston dataset and standardize the dataset. Calculate the distances between the observations. Run k-means algorithm on the dataset. Investigate what is the optimal number of clusters and run the algorithm again. Visualize the clusters (for example with the pairs() or ggpairs() functions, where the clusters are separated with colors) and interpret the results. (0-4 points)
+```{r}
+# load the data again
+data("Boston")
+str(Boston)
+summary(Boston)
+dim(Boston)
+
+#standardizing the data
+boston_scaled2 <- scale(Boston)
+boston_scaled2 <- as.data.frame(boston_scaled2)
+summary(boston_scaled2)
+
+# euclidean distance matrix
+dist_eu <- dist(boston_scaled2)
+
+# look at the summary of the distances
+summary(dist_eu)
+
+# manhattan distance matrix
+dist_man <- dist(boston_scaled2, method = 'manhattan')
+
+# look at the summary of the distances
+summary(dist_man)
+
+
+
+```
+Bonus: Perform k-means on the original Boston data with some reasonable number of clusters (> 2). Remember to standardize the dataset. Then perform LDA using the clusters as target classes. Include all the variables in the Boston data in the LDA model. Visualize the results with a biplot (include arrows representing the relationships of the original variables to the LDA solution). Interpret the results. Which variables are the most influencial linear separators for the clusters? (0-2 points to compensate any loss of points from the above exercises)
+```{r}
+
+# k-means clustering
+km <-kmeans(Boston, centers = 3)
+# plot the Boston dataset with clusters
+pairs(Boston, col = km$cluster)
+
+
