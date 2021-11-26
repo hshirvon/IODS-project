@@ -183,8 +183,9 @@ summary(dist_eu)
 dist_man <- dist(boston_scaled2, method = 'manhattan')
 
 # look at the summary of the distances
-summary(dist_man)
+summary(dist_man) 
 
+install.packages("GGally")
 
 
 ```
