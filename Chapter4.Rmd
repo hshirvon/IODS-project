@@ -1,7 +1,8 @@
 # **Chapter4:Clustering and classification**
-#Heidi Hirvonen 24.11.2020 
----
+# Heidi Hirvonen 24.11.2020 
+
 **1.** First, I created the Rmd file, Chapter4 and added it as a child file in the index.Rmd.
+
 **2.** I will load the Boston dataset from the MASS package and descirbe it briefly.
 ```{r}
 # access the MASS package
@@ -14,19 +15,32 @@ dim(Boston)
 ```
 The Boston dataset is a dataset ofHousing Values in Suburbs of Boston. It includes 14 variables and 506 observations
 The 14 variables in the dataset are:
--crim, per capita crime rate by town.
--zn, proportion of residential land zoned for lots over 25,000 sq.ft.
--indus, proportion of non-retail business acres per town.
--chas, Charles River dummy variable (= 1 if tract bounds river; 0 otherwise).
--nox, nitrogen oxides concentration (parts per 10 million).
--rm, average number of rooms per dwelling.
--age, proportion of owner-occupied units built prior to 1940.
--dis, weighted mean of distances to five Boston employment centres.
--rad, index of accessibility to radial highways.
--tax, full-value property-tax rate per \$10,000.
--ptratio, pupil-teacher ratio by town.
--black, 1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town.
--lstat, lower status of the population (percent).
+- crim, per capita crime rate by town.
+
+- zn, proportion of residential land zoned for lots over 25,000 sq.ft.
+
+- indus, proportion of non-retail business acres per town.
+
+- chas, Charles River dummy variable (= 1 if tract bounds river; 0 otherwise).
+
+- nox, nitrogen oxides concentration (parts per 10 million).
+
+- rm, average number of rooms per dwelling.
+
+- age, proportion of owner-occupied units built prior to 1940.
+
+- dis, weighted mean of distances to five Boston employment centres.
+
+- rad, index of accessibility to radial highways.
+
+- tax, full-value property-tax rate per \$10,000.
+
+- ptratio, pupil-teacher ratio by town.
+
+- black, 1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town.
+
+- lstat, lower status of the population (percent).
+
 -medv, median value of owner-occupied homes in \$1000s.
 
 **3.**I will show a graphical overview of the data and show summaries of the variables in the data. 
@@ -86,7 +100,7 @@ and a negative correlation with:
 
 We can conclude that a high pupil teacher ratio is connected to  a higher proportion of lower status of the population and a lower median value of owner-occupied homes.
 
-**4.** Next, I will standardize the dataset and print out summaries of the scaled data. As we can see, standardization will set the mean of all the variables to 0.
+**4.** Next, I will standardize the dataset and print out summaries of the scaled data. As we can see, **standardization will set the mean of all the variables to 0.**
 
 ```{r}
 # center and standardize variables
@@ -101,7 +115,7 @@ class(boston_scaled)
 # change the object to data frame
 boston_scaled <- as.data.frame(boston_scaled)
 ```
-Next,  let's create a categorical variable of the crime rate in the Boston dataset using the scaled crime rate and quantiles as the break points in the categorical variable.Also dropping the old crime rate variable from the dataset. Divide the dataset to train and test sets, so that 80% of the data belongs to the train set. (0-2 points)
+Next,  let's create a categorical variable of the crime rate in the Boston dataset using the scaled crime rate and quantiles as the break points. Let's also drop the old crime rate variable from the dataset and divide the dataset to train and test sets, so that 80% of the data belongs to the train set. 
 ```{r}
 # summary of the scaled crime rate
 summary(boston_scaled$crim)
@@ -173,7 +187,7 @@ lda.arrows(lda.fit, myscale = 1)
 
 ```
 **6.** 
-Save the crime categories from the test set and then remove the categorical crime variable from the test dataset. Then predict the classes with the LDA model on the test data. Cross tabulate the results with the crime categories from the test set. Comment on the results. 
+Save the crime categories from the test set and then remove the categorical crime variable from the test dataset. Then predict the classes with the LDA model on the test data. Cross tabulate the results with the crime categories from the test set. 
 
 ```{r}
 # predict classes with test data
@@ -183,7 +197,7 @@ lda.pred <- predict(lda.fit, newdata = test)
 table(correct = correct_classes, predicted = lda.pred$class)
 
 ```
-**7.** Reload the Boston dataset and standardize the dataset. Calculate the distances between the observations. Run k-means algorithm on the dataset. Investigate what is the optimal number of clusters and run the algorithm again. Visualize the clusters (for example with the pairs() or ggpairs() functions, where the clusters are separated with colors) and interpret the results. (0-4 points)
+**7.** Let's reload the Boston dataset and standardizeit. Calculate the distances between the observations. Run k-means algorithm on the dataset. Investigate what is the optimal number of clusters and run the algorithm again. Visualize the clusters (for example with the pairs() or ggpairs() functions, where the clusters are separated with colors) and interpret the results. (0-4 points)
 ```{r}
 # load the data again
 data("Boston")
