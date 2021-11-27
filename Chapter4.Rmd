@@ -156,7 +156,7 @@ correct_classes <- test$crime
 test <- dplyr::select(test, -crime)
 
 ```
-**5.** Fitting the linear discriminant analysis on the train set. Use the categorical crime rate as the target variable and all the other variables in the dataset as predictor variables. Draw the LDA (bi)plot. 
+**5.** Fitting the linear discriminant analysis on the train set. Use the categorical crime rate as the target variable and all the other variables in the dataset as predictor variables. I will draw the LDA (bi)plot. 
 
 ```{r}
 # MASS and train are available
@@ -187,7 +187,7 @@ lda.arrows(lda.fit, myscale = 1)
 
 ```
 **6.** 
-Save the crime categories from the test set and then remove the categorical crime variable from the test dataset. Then predict the classes with the LDA model on the test data. Cross tabulate the results with the crime categories from the test set. 
+Next, I will save the crime categories from the test set and then remove the categorical crime variable from the test dataset. Then predict the classes with the LDA model on the test data. Cross tabulate the results with the crime categories from the test set. 
 
 ```{r}
 # predict classes with test data
@@ -197,7 +197,11 @@ lda.pred <- predict(lda.fit, newdata = test)
 table(correct = correct_classes, predicted = lda.pred$class)
 
 ```
-**7.** Let's reload the Boston dataset and standardizeit. Calculate the distances between the observations. Run k-means algorithm on the dataset. Investigate what is the optimal number of clusters and run the algorithm again. Visualize the clusters (for example with the pairs() or ggpairs() functions, where the clusters are separated with colors) and interpret the results. (0-4 points)
+The LDA model fitted using 80% of the original data set predicts  the categories of the crime variable quite well. In the case of high the prediction is best.
+
+**7.** Next I will reload the Boston dataset and standardize it. Then I will calculate the distances between the observations and run k-means algorithm on the dataset. 
+
+I will also investigate what is the optimal number of clusters and run the algorithm again. I will isualize the clusters with the pairs() & ggpairs() functions, where the clusters are separated with colors) and interpret the results. 
 ```{r}
 # load the data again
 data("Boston")
@@ -222,16 +226,35 @@ dist_man <- dist(boston_scaled2, method = 'manhattan')
 # look at the summary of the distances
 summary(dist_man) 
 
-
-
-
-```
-Bonus: Perform k-means on the original Boston data with some reasonable number of clusters (> 2). Remember to standardize the dataset. Then perform LDA using the clusters as target classes. Include all the variables in the Boston data in the LDA model. Visualize the results with a biplot (include arrows representing the relationships of the original variables to the LDA solution). Interpret the results. Which variables are the most influencial linear separators for the clusters? (0-2 points to compensate any loss of points from the above exercises)
-```{r}
-
 # k-means clustering
-km <-kmeans(Boston, centers = 3)
+km <- kmeans(boston_scaled2, centers = 3) 
+
 # plot the Boston dataset with clusters
 pairs(Boston, col = km$cluster)
+
+# Boston dataset is available
+set.seed(123)
+
+# determine the number of clusters
+k_max <- 10
+
+# calculate the total within sum of squares
+twcss <- sapply(1:k_max, function(k){kmeans(Boston, k)$tot.withinss})
+
+# visualize the results
+#install.packages("ggplot2")
+#library (ggplot2)
+#qplot(x = 1:k_max, y = twcss, geom = 'line')
+
+# k-means clustering
+km <-kmeans(Boston, centers = 2)
+
+# plot the Boston dataset with clusters
+pairs(Boston, col = km$cluster)
+
+```
+
+```{r}
+
 
 

@@ -46,13 +46,13 @@ gather(joined_data) %>% glimpse
 ```{r}
 
 #Produce summary statistics of high_use and health
-joined_data %>% group_by(high_use) %>% summarise(count = n(),mean(health))
+#joined_data %>% group_by(high_use) %>% summarise(count = n(),mean(health))
 
 # initialize a plot of high_use and health
-a1 <- ggplot(joined_data, aes(x = high_use, y = health))
+#a1 <- ggplot(joined_data, aes(x = high_use, y = health))
 
 # define the plot as a boxplot and draw it
-a1 + geom_boxplot()+ xlab("high_use") + ylab("health") 
+#a1 + geom_boxplot()+ xlab("high_use") + ylab("health") 
 
 ```
 
