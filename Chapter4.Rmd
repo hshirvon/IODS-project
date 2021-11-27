@@ -32,7 +32,7 @@ The 14 variables in the dataset are:
 **3.**I will show a graphical overview of the data and show summaries of the variables in the data. 
 ```{r}
 summary(Boston)
-#summaries are interpreted along witjh appropriate graphics of all the continuous variables
+#summaries are interpreted along with appropriate graphics of all the continuous variables
 boxplot(Boston$crim)
 boxplot(Boston$zn)
 boxplot(Boston$indus)
@@ -45,7 +45,6 @@ boxplot(Boston$ptratio)
 boxplot(Boston$black)
 boxplot(Boston$lstat)
 boxplot(Boston$medv)
-
 
 ```
 From the summaries we get an overview of the variables, here are some observations:
@@ -87,13 +86,20 @@ and a negative correlation with:
 
 We can conclude that a high pupil teacher ratio is connected to  a higher proportion of lower status of the population and a lower median value of owner-occupied homes.
 
-**4.** Next, I will standardize the dataset and print out summaries of the scaled data. As we can see, tandardization will set the mean of all the variables to 0.
+**4.** Next, I will standardize the dataset and print out summaries of the scaled data. As we can see, standardization will set the mean of all the variables to 0.
 
 ```{r}
+# center and standardize variables
 boston_scaled <- scale(Boston)
-summary(boston_scaled)
-boston_scaled <- as.data.frame(boston_scaled)
 
+# summaries of the scaled variables
+summary(boston_scaled)
+
+# class of the boston_scaled object
+class(boston_scaled)
+
+# change the object to data frame
+boston_scaled <- as.data.frame(boston_scaled)
 ```
 Next,  let's create a categorical variable of the crime rate in the Boston dataset using the scaled crime rate and quantiles as the break points in the categorical variable.Also dropping the old crime rate variable from the dataset. Divide the dataset to train and test sets, so that 80% of the data belongs to the train set. (0-2 points)
 ```{r}
@@ -202,7 +208,7 @@ dist_man <- dist(boston_scaled2, method = 'manhattan')
 # look at the summary of the distances
 summary(dist_man) 
 
-install.packages("GGally")
+
 
 
 ```
