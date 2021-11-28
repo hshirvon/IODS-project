@@ -1,5 +1,4 @@
 # **Chapter4:Clustering and classification**
-# Heidi Hirvonen 24.11.2020 
 
 **1.** First, I created the Rmd file, Chapter4 and added it as a child file in the index.Rmd.
 
@@ -13,8 +12,9 @@ data("Boston")
 str(Boston)
 dim(Boston)
 ```
-The Boston dataset is a dataset ofHousing Values in Suburbs of Boston. It includes 14 variables and 506 observations
+The Boston dataset is a dataset of Housing Values in Suburbs of Boston. It includes 14 variables and 506 observations
 The 14 variables in the dataset are:
+
 - crim, per capita crime rate by town.
 
 - zn, proportion of residential land zoned for lots over 25,000 sq.ft.
@@ -60,12 +60,16 @@ boxplot(Boston$black)
 boxplot(Boston$lstat)
 boxplot(Boston$medv)
 
+
 ```
-From the summaries we get an overview of the variables, here are some observations:
+
+From the summaries we get an overview of the variables, here are some interesting observations:
 
 - Per capita crime rate by town varies a lot, high rates in some towns are pulling the mean (3.61352) up and it is a lot higher than the median (0.25651).
+- the median of tax (full-value property-tax rate per $10,000) is 330, but the mean is 408.2 as the higher values are pulling it up.
 - The proportion of residential land zoned for lots over 25,000 sq.ft also varies a lot, the median is 0.00, but the mean is 11.36.
-- Proportion of non-retail business acres per town varies between 0.46 and 27.74.
+- Proportion of non-retail business acres per town  also varies between 0.46 and 27.74.
+- The proportion of blacks varies between 0.32-396.90, but the small values are quite a small proportion as even the 1st quartile is at 375.38, median 391.44 and mean 356.67.
 
 ```{r}
 library(corrplot)
@@ -85,20 +89,31 @@ pairs(Boston)
 
 
 ```
+
+
 - From the correlation matrix we can see that there is a strong negative correlation between index of accessibility to radial highways(rad) and high full-value property-tax rate per \$10,000 (tax)
+
 - There is also a strong negative correlation between weighted mean of distances to five Boston employment centres (dis)  nitrogen oxides concentration (nox), proportion of owner-occupied units built prior to 1940 (age) &  proportion of non-retail business acres per town (indus).
 
 I am interested in education so I want to take a closer look at how the - pupil-teacher ratio by town is correlated with the other variables. It seems that there is a somewhat strong positive correlation with:
+
 - tax, full-value property-tax rate per \$10,000.(0.46)
+
 - rad, index of accessibility to radial highways.(0.46)
+
 - indus, proportion of non-retail business acres per town (0.38)
+
 - lstat, lower status of the population (percent) (0.37)
+
 and a negative correlation with: 
+
 - medv, median value of owner-occupied homes in \$1000s. (-0.51)
+
 - rm, average number of rooms per dwelling (-0.36)
+
 - zn, proportion of residential land zoned for lots over 25,000 sq.ft.(-0.39)
 
-We can conclude that a high pupil teacher ratio is connected to  a higher proportion of lower status of the population and a lower median value of owner-occupied homes.
+An interesting observation is that a high pupil teacher ratio is connected to a higher proportion of lower status of the population and a lower median value of owner-occupied homes.
 
 **4.** Next, I will standardize the dataset and print out summaries of the scaled data. As we can see, **standardization will set the mean of all the variables to 0.**
 
@@ -115,7 +130,8 @@ class(boston_scaled)
 # change the object to data frame
 boston_scaled <- as.data.frame(boston_scaled)
 ```
-Next,  let's create a categorical variable of the crime rate in the Boston dataset using the scaled crime rate and quantiles as the break points. Let's also drop the old crime rate variable from the dataset and divide the dataset to train and test sets, so that 80% of the data belongs to the train set. 
+
+Next, let's create a categorical variable of the crime rate in the Boston dataset using the scaled crime rate and quantiles as the break points. Let's also drop the old crime rate variable from the dataset and divide the dataset to train and test sets, so that 80% of the data belongs to the train set. 
 ```{r}
 # summary of the scaled crime rate
 summary(boston_scaled$crim)
@@ -186,8 +202,8 @@ plot(lda.fit, dimen = 2, col = classes, pch = classes)
 lda.arrows(lda.fit, myscale = 1)
 
 ```
-**6.** 
-Next, I will save the crime categories from the test set and then remove the categorical crime variable from the test dataset. Then predict the classes with the LDA model on the test data. Cross tabulate the results with the crime categories from the test set. 
+
+**6.** Next, I will save the crime categories from the test set and then remove the categorical crime variable from the test dataset. Then predict the classes with the LDA model on the test data. Cross tabulate the results with the crime categories from the test set. 
 
 ```{r}
 # predict classes with test data
@@ -197,6 +213,7 @@ lda.pred <- predict(lda.fit, newdata = test)
 table(correct = correct_classes, predicted = lda.pred$class)
 
 ```
+
 The LDA model fitted using 80% of the original data set predicts  the categories of the crime variable quite well. In the case of high the prediction is best.
 
 **7.** Next I will reload the Boston dataset and standardize it. Then I will calculate the distances between the observations and run k-means algorithm on the dataset. 
