@@ -41,7 +41,7 @@ The 14 variables in the dataset are:
 
 - lstat, lower status of the population (percent).
 
--medv, median value of owner-occupied homes in \$1000s.
+- medv, median value of owner-occupied homes in \$1000s.
 
 **3.**I will show a graphical overview of the data and show summaries of the variables in the data. 
 ```{r}
