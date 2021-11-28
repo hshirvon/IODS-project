@@ -65,7 +65,20 @@ glimpse(human)
 
 # The joined data has 195 observations and 19 variables as expected
 
+# Set the working directory of you R session the iods project folder
+setwd("")
+
+
 ##Saving the analysis data set.
 ?write.csv
 write.csv(human, file = "human.csv")
+
+
+
+# Save the analysis dataset to the ‘data’ folder
+write.csv(newdata,"C:/Users/Lenovo/Documents/R/IODS-project/data/newdata2014.csv", row.names = FALSE)
+# read the data again
+myData <- read.csv('./data/newdata2014.csv')
+str(myData)
+head(myData)
 
