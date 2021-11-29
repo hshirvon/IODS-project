@@ -1,0 +1,14 @@
+# **Chapter5:Dimensionality reduction techniques**
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+First I will load the ‘human’ data into R. 
+Explore the structure and the dimensions of the data and describe the dataset briefly, assuming the reader has no previous knowledge of it (this is now close to the reality, since you have named the variables yourself). (0-1 point)
+```{r}
+human <- read.csv("data/human.csv", sep=",", header=TRUE)
+str(human)
+dim(human)
+```
+

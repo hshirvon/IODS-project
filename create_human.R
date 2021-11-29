@@ -1,4 +1,11 @@
-# 1. Creating this new R script called create_human.R
+# Heidi Hirvonen
+# 29.11.2021
+# data source http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human1.txt
+#metafiles for the original datasets:
+# http://hdr.undp.org/en/content/human-development-index-hdi
+# http://hdr.undp.org/sites/default/files/hdr2015_technical_notes.pdf
+
+#1. Creating this new R script called create_human.R
 
 #2.. Reading the “Human development” and “Gender inequality” datas into R. 
 hd <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human_development.csv", stringsAsFactors = F, na.strings = "..")
@@ -69,7 +76,7 @@ glimpse(human)
 setwd("/Users/heidihirvonen/Documents/OPISKELU 2020/MENETELMAOPINNOT/OpenDataScience/IODS-project/data")
 
 ##Saving the analysis dataset to the ‘data’ folder
-write.csv(human, file = "human.csv")
+write.csv(human, file = "human.csv",row.names= FALSE)
 
 
 
