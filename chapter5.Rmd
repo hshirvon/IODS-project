@@ -3,12 +3,44 @@
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+**1.**  Showing a graphical overview of the data and show summaries of the variables in the data. Describe and interpret the outputs, commenting on the distributions of the variables and the relationships between them. 
 
-First I will load the ‘human’ data into R. 
-Explore the structure and the dimensions of the data and describe the dataset briefly, assuming the reader has no previous knowledge of it (this is now close to the reality, since you have named the variables yourself). (0-1 point)
 ```{r}
-human <- read.csv("data/human.csv", sep=",", header=TRUE)
-str(human)
-dim(human)
+human <- read.csv("data/human.csv", header=TRUE)
+summary(human)
+
+human_ <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human2.txt", sep=",", header=TRUE)
+summary(human_)
+
+
+library(GGally)
+library(dplyr)
+library (corrplot)
+# visualize the 'human_' variables
+ggpairs(human_)
+
+# compute the correlation matrix and visualize it with corrplot
+cor(human_) %>% corrplot
+
+
+
+
 ```
+There are large differences in the variables between different countries. Here are some observations: 
+
+- life expectancy varies between 49 and 83,5 years
+- maternal mortality rate varies between 1 and 1100
+- female labour participation compared to men varies between 0.1857 and 1.0380
+- female secondary education compared to men varies between 0.1717 and 1.4967
+- GNI varies between 581 and 123124
+
+There is a **positive correlation** between expected education and life expectancy
+also a **positive correlation** between adolescent birthrate and maternal mortality
+
+There is a **negative correlation** between maternal mortality and life expectancy
+There is a **negative correlation** between maternal mortality and expected education
+There is also a **negative correlation** between adolescent birthrate and life expectancy
+There is also a **negative correlation** between adolescent birthrate and expected education
+
+We can note that higher female secondary education is positively correlatad with things like educational expectation, life expectacy and GNI and negatively correlated with adolescent birthrate and maternal mortality.
 

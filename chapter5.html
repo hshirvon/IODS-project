@@ -169,7 +169,11 @@ pre code {
 
 <div id="chapter5dimensionality-reduction-techniques" class="section level1">
 <h1><strong>Chapter5:Dimensionality reduction techniques</strong></h1>
-<p>First I will load the ‘human’ data into R. Explore the structure and the dimensions of the data and describe the dataset briefly, assuming the reader has no previous knowledge of it (this is now close to the reality, since you have named the variables yourself). (0-1 point)</p>
+</div>
+<div id="data-wrangling" class="section level1">
+<h1>- Data wrangling</h1>
+<p>This we will be working with the “human” data.</p>
+<p>This is a data combined from two datasets including variables related to gender inequality and human development by country. It includes variables such as life expectancy at birth and labour force participation by gender as well as gender inequality and human development ranks by country.</p>
 <pre class="r"><code>human &lt;- read.csv(&quot;data/human.csv&quot;, sep=&quot;,&quot;, header=TRUE)
 str(human)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    195 obs. of  19 variables:
@@ -194,6 +198,50 @@ str(human)</code></pre>
 ##  $ femaletomalelabour : num  0.891 0.819 0.825 0.884 0.829 ...</code></pre>
 <pre class="r"><code>dim(human)</code></pre>
 <pre><code>## [1] 195  19</code></pre>
+<ol style="list-style-type: decimal">
+<li>Sometimes a variable is coded in a way that is not natural for R to understand. For example, large integers can sometimes be coded with a comma to separate thousands. In these cases, R interprets the variable as a factor or a character. This is the case with the Gross National Income (gni) variable, so we need to transform it to numeric using string manipulation to get rid of the unwanted commas.</li>
+</ol>
+<p>I will mutate the “human” data which means that I will add this new Gross Nationa Income variable (newgni) asa mutation of the existing ones. The mutate() function is from the ‘dplyr’ package which is part of the ‘tidyverse’ packages.</p>
+<pre class="r"><code># access the stringr and dplyr packages
+library(stringr)
+library(dplyr); </code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code># look at the structure of the gni column in &#39;human&#39;
+str(human$gni)</code></pre>
+<pre><code>##  chr [1:195] &quot;64,992&quot; &quot;42,261&quot; &quot;56,431&quot; &quot;44,025&quot; &quot;45,435&quot; &quot;43,919&quot; &quot;39,568&quot; ...</code></pre>
+<pre class="r"><code># define a new column new gni by changing gni to numeric
+gninew &lt;- str_replace(human$gni, pattern=&quot;,&quot;, replace =&quot;&quot;) %&gt;% as.numeric
+human &lt;- mutate(human, gninew = gninew)
+
+str(human)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    195 obs. of  20 variables:
+##  $ hdrank             : int  1 2 3 4 5 6 6 8 9 9 ...
+##  $ country            : chr  &quot;Norway&quot; &quot;Australia&quot; &quot;Switzerland&quot; &quot;Denmark&quot; ...
+##  $ hdi                : num  0.944 0.935 0.93 0.923 0.922 0.916 0.916 0.915 0.913 0.913 ...
+##  $ lifeexpectancy     : num  81.6 82.4 83 80.2 81.6 80.9 80.9 79.1 82 81.8 ...
+##  $ expectededucation  : num  17.5 20.2 15.8 18.7 17.9 16.5 18.6 16.5 15.9 19.2 ...
+##  $ meaneducation      : num  12.6 13 12.8 12.7 11.9 13.1 12.2 12.9 13 12.5 ...
+##  $ gni                : chr  &quot;64,992&quot; &quot;42,261&quot; &quot;56,431&quot; &quot;44,025&quot; ...
+##  $ gniminushdi        : int  5 17 6 11 9 11 16 3 11 23 ...
+##  $ giirank            : int  1 2 3 4 5 6 6 8 9 9 ...
+##  $ gii                : num  0.067 0.11 0.028 0.048 0.062 0.041 0.113 0.28 0.129 0.157 ...
+##  $ maternalmortality  : int  4 6 6 5 6 7 9 28 11 8 ...
+##  $ adolescentbirthrate: num  7.8 12.1 1.9 5.1 6.2 3.8 8.2 31 14.5 25.3 ...
+##  $ parliament         : num  39.6 30.5 28.5 38 36.9 36.9 19.9 19.4 28.2 31.4 ...
+##  $ femaleeducation    : num  97.4 94.3 95 95.5 87.7 96.3 80.5 95.1 100 95 ...
+##  $ maleeducation      : num  96.7 94.6 96.6 96.6 90.5 97 78.6 94.8 100 95.3 ...
+##  $ femalelabour       : num  61.2 58.8 61.8 58.7 58.5 53.6 53.1 56.3 61.6 62 ...
+##  $ malelabour         : num  68.7 71.8 74.9 66.4 70.6 66.4 68.1 68.9 71 73.8 ...
+##  $ femaletomaleeduc   : num  1.007 0.997 0.983 0.989 0.969 ...
+##  $ femaletomalelabour : num  0.891 0.819 0.825 0.884 0.829 ...
+##  $ gninew             : num  64992 42261 56431 44025 45435 ...</code></pre>
 </div>
 
 

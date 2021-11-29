@@ -182,6 +182,6 @@ human_ <- select(human_, -country)
 str(human_)
 human_
 
-write.csv(human, file = "human.csv",row.names= TRUE)
+write.csv(human_, file = "human.csv",row.names= TRUE)
 
 
