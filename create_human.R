@@ -5,6 +5,9 @@
 # http://hdr.undp.org/en/content/human-development-index-hdi
 # http://hdr.undp.org/sites/default/files/hdr2015_technical_notes.pdf
 
+# Set the working directory of you R session the iods project folder
+setwd("/Users/heidihirvonen/Documents/OPISKELU 2020/MENETELMAOPINNOT/OpenDataScience/IODS-project/data")
+
 #1. Creating this new R script called create_human.R
 
 #2.. Reading the “Human development” and “Gender inequality” datas into R. 
@@ -79,5 +82,106 @@ setwd("/Users/heidihirvonen/Documents/OPISKELU 2020/MENETELMAOPINNOT/OpenDataSci
 write.csv(human, file = "human.csv",row.names= FALSE)
 
 
+
+# Data wrangling
+
+#This we will be working with the "human" data.
+
+#This is a data combined from two datasets including variables related to gender inequality and 
+#human development by country. It includes variables such as life expectancy at birth and 
+#labour force participation by gender as well as gender inequality and human development ranks by country.
+
+human <- read.csv("data/human.csv", sep=",", header=TRUE)
+str(human)
+dim(human)
+
+#Sometimes a variable is coded in a way that is not natural for R to understand. 
+#For example,  large integers can sometimes be coded with a comma to separate thousands. 
+#In these cases, R interprets the variable as a factor or a character. 
+#This is the case with the Gross National Income (gni) variable, 
+#so we need to transform it to numeric using string manipulation to get rid of the unwanted commas.
+#I will mutate the "human" data which means that I will add this new Gross Nationa Income variable (newgni)  
+#as a mutation of the existing ones. 
+
+# access the stringr and dplyr packages
+library(stringr)
+library(dplyr); 
+
+# look at the structure of the gni column in 'human'
+str(human$gni)
+
+# define a new column new gni by changing gni to numeric
+gninew <- str_replace(human$gni, pattern=",", replace ="") %>% as.numeric
+human <- mutate(human, gninew = gninew)
+str(human)
+
+
+#When a variable you wish to analyse contains missing values, there are usually two main options:
+#Remove the observations with missing values
+#Replace the missing values with actual values using an imputation technique.
+#I will use the first option, which is the simplest solution. So next,I will exclude unneeded variables from the human data. 
+
+#I will only keep the columns:
+#"country" 
+#"femaletomaleeduc" 
+#"femaletomalelabour" 
+#"expectededucation" 
+#"lifeexpectancy" 
+#"gni" 
+#"maternalmortality" 
+#"adolescentbirthrate"
+#"parliament"
+
+colnames(human)
+# columns to keep
+keep <- c("country", "femaletomaleeduc", "femaletomalelabour","lifeexpectancy", "expectededucation", "gni" , "maternalmortality" , "adolescentbirthrate",  "parliament")
+
+# select the 'keep' columns
+human <- select(human, one_of(keep))
+
+str(human)
+#The "human" data now only includes the 9 variables mentioned above and 195 observations.
+
+#Then I will remove all rows with missing values and save to human_
+#The human_ data includes 162 observations of the 9 variables
+
+# print out a completeness indicator of the 'human' data
+complete.cases(human)
+
+# print out the data along with a completeness indicator as the last column
+data.frame(human[-1], comp = complete.cases(human))
+
+# filter out all rows with NA values
+human_ <- filter(human, complete.cases(human))
+
+str(human_)
+
+human_
+
+# Besides missing values, there might be other reasons to exclude observations. 
+# I will remove the observations which relate to regions instead of countries. 
+
+# look at the last 10 observations
+tail(human_, 10)
+
+# last indice we want to keep
+last <- nrow(human_) - 7
+
+# choose everything until the last 7 observations
+human_ <- human_[1:155, ]
+
+# 5. I will define the row names of the data by the country names and remove the country name column from the data. The data should now has 155 observations and 8 variables. I will ave the human data in my data folder including the row names. 
+
+# add countries as rownames
+rownames(human_) <- human_$Country
+
+# remove the Country variable
+human_ <- select(human_, -country)
+
+#the human_ data now has 8 variables and 155 observations
+str(human_)
+human_
+
+write.csv(human, file = "human.csv",row.names= TRUE)
 
 
