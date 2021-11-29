@@ -84,9 +84,6 @@ cor_matrix
 # visualize the correlation matrix
 corrplot(cor_matrix, method="circle", type="upper", cl.pos="b", tl.pos="d", tl.cex = 0.6)
 
-# plot matrix of the variables
-pairs(Boston)
-
 
 ```
 
@@ -258,16 +255,18 @@ k_max <- 10
 # calculate the total within sum of squares
 twcss <- sapply(1:k_max, function(k){kmeans(Boston, k)$tot.withinss})
 
+
 # visualize the results
-#install.packages("ggplot2")
-#library (ggplot2)
-#qplot(x = 1:k_max, y = twcss, geom = 'line')
+
+library (ggplot2)
+qplot(x = 1:k_max, y = twcss, geom = 'line')
 
 # k-means clustering
 km <-kmeans(Boston, centers = 2)
 
 # plot the Boston dataset with clusters
 pairs(Boston, col = km$cluster)
+
 
 ```
 
