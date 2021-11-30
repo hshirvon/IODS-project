@@ -83,7 +83,9 @@ write.csv(human, file = "human.csv",row.names= FALSE)
 
 
 
-# Data wrangling
+# Data wrangling, week 5
+#Heidi Hirvonen
+#29.11.2021
 
 #This we will be working with the "human" data.
 
@@ -173,7 +175,7 @@ human_ <- human_[1:155, ]
 # 5. I will define the row names of the data by the country names and remove the country name column from the data. The data should now has 155 observations and 8 variables. I will ave the human data in my data folder including the row names. 
 
 # add countries as rownames
-rownames(human_) <- human_$Country
+rownames(human_) <- human_$country
 
 # remove the Country variable
 human_ <- select(human_, -country)
