@@ -110,32 +110,32 @@ Next, I will create a new data set "tea_time" and do **Multiple Correspondence A
 keep_columns <- c("Tea", "How", "how", "sugar", "where", "lunch")
 
 # select the 'keep_columns' to create a new dataset
-#tea_time <- select(tea, one_of(keep_columns))
+tea_time <- dplyr::select(tea, one_of(keep_columns))
 
 # look at the summaries and structure of the data
-#summary(tea_time)
-#str(tea_time)
+summary(tea_time)
+str(tea_time)
 
 # visualize the dataset
-#gather(tea_time) %>% ggplot(aes(value)) + facet_wrap("key", scales = "free") + geom_bar() + theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
+gather(tea_time) %>% ggplot(aes(value)) + facet_wrap("key", scales = "free") + geom_bar() + theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
 
 
 # multiple correspondence analysis
-#mca <- MCA(tea_time, graph = FALSE)
+mca <- MCA(tea_time, graph = FALSE)
 
 # summary of the model
-#summary(mca)
+summary(mca)
 
 # visualize MCA
-#plot(mca, invisible=c("ind"))
-#plot(mca, invisible=c("var"))
+plot(mca, invisible=c("ind"))
+plot(mca, invisible=c("var"))
 
 
 #adjusting the code by adding argument habillage = "quali". This will differentiate the different variables with different colors, making the visualization easier to interpret.
-#plot(mca, invisible=c("ind"), habillage = "quali")
+plot(mca, invisible=c("ind"), habillage = "quali")
 
 
 # multiple correspondence analysis also visualizes the analysis by default
-#mca <- MCA(tea_time)
+mca <- MCA(tea_time)
 
 ```
