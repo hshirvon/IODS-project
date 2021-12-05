@@ -3,11 +3,10 @@
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-**1.**  Showing a graphical overview of the data and show summaries of the variables in the data. Describe and interpret the outputs, commenting on the distributions of the variables and the relationships between them. 
-
+**1.**  Showing a graphical overview of the data and show summaries of the variables in the data.
 ```{r}
-human <- read.csv("data/human.csv", header=TRUE)
-summary(human)
+#human <- read.csv("data/human.csv", header=TRUE)
+#summary(human)
 
 human_ <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human2.txt", sep=",", header=TRUE)
 summary(human_)
@@ -23,9 +22,8 @@ ggpairs(human_)
 cor(human_) %>% corrplot
 
 
-
-
 ```
+
 There are large differences in the variables between different countries. Here are some observations: 
 
 - life expectancy varies between 49 and 83,5 years
@@ -44,3 +42,100 @@ There is also a **negative correlation** between adolescent birthrate and expect
 
 We can note that higher female secondary education is positively correlatad with things like educational expectation, life expectacy and GNI and negatively correlated with adolescent birthrate and maternal mortality.
 
+**2.** Next, I will perform **principal component analysis (PCA) on the not standardized human data**. I will show the variability captured by the principal components and draw a biplot displaying the observations by the first two principal components (PC1 coordinate in x-axis, PC2 coordinate in y-axis), along with arrows representing the original variables. 
+
+```{r}
+
+# print out summaries of the human_ variables
+summary(human_)
+
+# perform principal component analysis (with the SVD method)
+pca_human <- prcomp(human_)
+
+# draw a biplot of the principal component representation and the original variables
+biplot(pca_human, choices = 1:2)
+
+```
+**3.** Next, I will standardize the variables in the human_ data and repeat the above analysis. 
+
+The standardization will set the mean of the variables to zero thus creating a different biplot.
+```{r}
+# standardize the variables
+human_std <- scale(human_)
+
+# print out summaries of the standardized variables
+summary(human_std)
+
+# perform principal component analysis (with the SVD method)
+pca_human <- prcomp(human_std)
+
+# draw a biplot of the principal component representation and the original variables
+biplot(pca_human, choices = 1:2)
+```
+**4.** Based on the biplot drawn after PCA on the standardized human data we can note the following: 
+
+- Female labourforce participation and female parliament representation are pointing to the same direction as the second principal component so they contributre to that dimension. 
+
+- All the other features are pointing to the direction of the first principal component, thus contributing to that dimension.
+
+**5.** I will load the tea dataset from the package FactoMineR and explore the data briefly. 
+
+```{r}
+# access the Factominer, ggplot2, dplyr and tidyr packages
+library(FactoMineR)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+# load the tea data and exploring the data
+data("tea")
+str(tea)
+dim(tea)
+summary(tea)
+
+#The tea dataset contains 36 variables and 300 observations
+
+# visualize the dataset
+boxplot(tea[,0:18], main='Multiple Box plots')
+boxplot(tea$age)
+boxplot (tea[,20:36], main='Multiple Box plots')
+
+```
+
+Next, I will create a new data set "tea_time" and do **Multiple Correspondence Analysis (MCA)** on it and comment on the outputs.
+
+```{r}
+
+# column names to keep in the dataset
+keep_columns <- c("Tea", "How", "how", "sugar", "where", "lunch")
+
+# select the 'keep_columns' to create a new dataset
+#tea_time <- select(tea, one_of(keep_columns))
+
+# look at the summaries and structure of the data
+#summary(tea_time)
+#str(tea_time)
+
+# visualize the dataset
+#gather(tea_time) %>% ggplot(aes(value)) + facet_wrap("key", scales = "free") + geom_bar() + theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
+
+
+# multiple correspondence analysis
+#mca <- MCA(tea_time, graph = FALSE)
+
+# summary of the model
+#summary(mca)
+
+# visualize MCA
+#plot(mca, invisible=c("ind"))
+#plot(mca, invisible=c("var"))
+
+
+#adjusting the code by adding argument habillage = "quali". This will differentiate the different variables with different colors, making the visualization easier to interpret.
+#plot(mca, invisible=c("ind"), habillage = "quali")
+
+
+# multiple correspondence analysis also visualizes the analysis by default
+#mca <- MCA(tea_time)
+
+```

@@ -45,8 +45,8 @@ colnames(gii)[5] <-"adolescentbirthrate"
 colnames(gii)[6] <-"parliament"
 colnames(gii)[7] <-"femaleeducation"
 colnames(gii)[8] <-"maleeducation"
-colnames(gii)[9] <- "femalelabour"
-colnames(gii)[10] <- "malelabour"
+colnames(gii)[9] <-"femalelabour"
+colnames(gii)[10] <-"malelabour"
 colnames(gii)
  
 # 5. Mutating the “Gender inequality” data and create two new variables. 
@@ -54,9 +54,11 @@ colnames(gii)
 
 library(dplyr)
 gii <- mutate(gii, femaletomaleeduc = femaleeducation / maleeducation)
+print(gii$femaletomaleeduc)
 
 # second, the ratio of labour force participation of females and males in each country (i.e. labF / labM).
 gii <- mutate(gii, femaletomalelabour = femalelabour / malelabour)
+print(gii$femaletomalelabour)
 
 colnames(gii)
 
@@ -114,7 +116,7 @@ str(human$gni)
 
 # define a new column new gni by changing gni to numeric
 gninew <- str_replace(human$gni, pattern=",", replace ="") %>% as.numeric
-human <- mutate(human, gninew = gninew)
+human <- mutate(human, gni = gninew)
 str(human)
 
 
@@ -129,14 +131,14 @@ str(human)
 #"femaletomalelabour" 
 #"expectededucation" 
 #"lifeexpectancy" 
-#"gni" 
+#"gninew" 
 #"maternalmortality" 
 #"adolescentbirthrate"
 #"parliament"
 
 colnames(human)
 # columns to keep
-keep <- c("country", "femaletomaleeduc", "femaletomalelabour","lifeexpectancy", "expectededucation", "gni" , "maternalmortality" , "adolescentbirthrate",  "parliament")
+keep <- c("country", "femaletomaleeduc", "femaletomalelabour","lifeexpectancy", "expectededucation", "gninew" , "maternalmortality" , "adolescentbirthrate",  "parliament")
 
 # select the 'keep' columns
 human <- select(human, one_of(keep))
