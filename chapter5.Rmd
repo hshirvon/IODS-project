@@ -5,10 +5,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 **1.**  Showing a graphical overview of the data and show summaries of the variables in the data.
 ```{r}
-#human <- read.csv("data/human.csv", header=TRUE)
-#summary(human)
 
 human_ <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human2.txt", sep=",", header=TRUE)
+
 summary(human_)
 
 
@@ -56,6 +55,9 @@ pca_human <- prcomp(human_)
 biplot(pca_human, choices = 1:2)
 
 ```
+
+GNI has very high variance and captures most of the variability in the data
+
 **3.** Next, I will standardize the variables in the human_ data and repeat the above analysis. 
 
 The standardization will set the mean of the variables to zero thus creating a different biplot.
@@ -72,13 +74,16 @@ pca_human <- prcomp(human_std)
 # draw a biplot of the principal component representation and the original variables
 biplot(pca_human, choices = 1:2)
 ```
+
 **4.** Based on the biplot drawn after PCA on the standardized human data we can note the following: 
 
-- Female labourforce participation and female parliament representation are pointing to the same direction as the second principal component so they contributre to that dimension. 
+- Female labour force participation and female parliament representation are pointing to the same direction as the second principal component so they contributre to that dimension. 
 
 - All the other features are pointing to the direction of the first principal component, thus contributing to that dimension.
 
 **5.** I will load the tea dataset from the package FactoMineR and explore the data briefly. 
+
+The tea dataset contains 36 variables and 300 observations
 
 ```{r}
 # access the Factominer, ggplot2, dplyr and tidyr packages
@@ -92,8 +97,6 @@ data("tea")
 str(tea)
 dim(tea)
 summary(tea)
-
-#The tea dataset contains 36 variables and 300 observations
 
 # visualize the dataset
 boxplot(tea[,0:18], main='Multiple Box plots')
