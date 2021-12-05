@@ -56,6 +56,7 @@ biplot(pca_human, choices = 1:2)
 
 ```
 
+
 GNI has very high variance and captures most of the variability in the data
 
 **3.** Next, I will standardize the variables in the human_ data and repeat the above analysis. 
@@ -74,6 +75,7 @@ pca_human <- prcomp(human_std)
 # draw a biplot of the principal component representation and the original variables
 biplot(pca_human, choices = 1:2)
 ```
+
 
 **4.** Based on the biplot drawn after PCA on the standardized human data we can note the following: 
 
@@ -104,6 +106,7 @@ boxplot(tea$age)
 boxplot (tea[,20:36], main='Multiple Box plots')
 
 ```
+
 
 Next, I will create a new data set "tea_time" and do **Multiple Correspondence Analysis (MCA)** on it and comment on the outputs.
 
