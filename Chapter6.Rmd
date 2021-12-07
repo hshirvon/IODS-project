@@ -1,0 +1,11 @@
+---
+title: "Chapter6"
+author: "Heidi Hirvonen"
+date: "12/7/2021"
+output: html_document
+---
+
+```{r}
+
+```
+
