@@ -62,6 +62,12 @@ View(RATSlong)
 summary(RATSlong)
 names(RATSlong)
 
+
+##Saving the analysis datasets to the ‘data’ folder
+setwd("/Users/heidihirvonen/Documents/OPISKELU 2020/MENETELMAOPINNOT/OpenDataScience/IODS-project/data")
+write.csv(BPRSlong, file = "BPRS.csv",row.names= FALSE)
+write.csv(RATSlong, file = "RATS.csv",row.names= FALSE)
+
 #One of the fundamental differences between the wide-form and the long-form is that the wide-form
 #displays many measurements from one individual in one row and the column names show what the measurements are.
 # the amount of observations in the datasets has increased as every observation per individual per week is  its own row in the long format.
