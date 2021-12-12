@@ -142,7 +142,7 @@ ggplot(BPRSL, aes(x = week, y = bprs, group = subject)) + geom_line()
 My graph is not the easiest to interpret (not sure why as I tried to do it as instructed!), but there seems to be quite a bit variation in the value of bprs.
 
 ```{r}
-ggplot(BPRSL, aes(x = week, y = bprs, group = treatment)) + geom_line()
+#ggplot(BPRSL, aes(x = week, y = bprs, group = #treatment)) + geom_line()
 
 ```
 From the second graph it is easier to see that the two treatment groups differ from eachother in the value of bprs most whitin the first week, but not so much later on.
